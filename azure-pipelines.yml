@@ -16,6 +16,15 @@ pr:
   - master
   - release/*
 
+#strategy:
+#  matrix:
+#    ubuntu16:
+#      containerImage: ubuntu:16.04
+#    ubuntu18:
+#      containerImage: ubuntu:18.04
+#
+#container: $[ variables['containerImage'] ]
+
 jobs:
   - job: pytest
     # how long to run the job before automatically cancelling
