@@ -203,11 +203,9 @@ def test_no_support(metric_class, metric_fn):
 class TestPrecisionRecall(MetricTester):
 
     @pytest.mark.parametrize("ddp", [False, True])
-    @pytest.mark.parametrize("dist_sync_on_step", [True, False])
     def test_precision_recall_class(
         self,
         ddp: bool,
-        dist_sync_on_step: bool,
         preds: Tensor,
         target: Tensor,
         sk_wrapper: Callable,
@@ -244,7 +242,7 @@ class TestPrecisionRecall(MetricTester):
                 ignore_index=ignore_index,
                 mdmc_average=mdmc_average,
             ),
-            dist_sync_on_step=dist_sync_on_step,
+            dist_sync_on_step=False,
             metric_args={
                 "num_classes": num_classes,
                 "average": average,
