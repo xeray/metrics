@@ -97,10 +97,10 @@ jobs:
 
     - name: Tests
       run: |
-        pip install pytest-parallel
+        pip install pytest-xdist
         phmdoctest README.md --outfile tests/test_readme.py
-        python -m pytest torchmetrics tests -v --cov=torchmetrics --durations=50 --tests-per-worker auto --junitxml="junit/$PYTEST_ARTEFACT"
-        pip uninstall -y pytest-parallel
+        python -m pytest torchmetrics tests -v --cov=torchmetrics --durations=50  -n2 --junitxml="junit/$PYTEST_ARTEFACT"
+        pip uninstall -y pytest-xdist
 
     - name: Upload pytest test results
       uses: actions/upload-artifact@v2
