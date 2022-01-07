@@ -2,8 +2,7 @@ name: CI testing - complete
 
 # see: https://help.github.com/en/actions/reference/events-that-trigger-workflows
 on:  # Trigger the workflow on push or pull request, but only for the master branch
-  push:
-    branches: [master, "release/*"]
+  push: {}  # FIXME
   pull_request:
     branches: [master, "release/*"]
     types: [opened, reopened, ready_for_review, synchronize]
@@ -98,8 +97,10 @@ jobs:
 
     - name: Tests
       run: |
+        pip install pytest-parallel
         phmdoctest README.md --outfile tests/test_readme.py
-        python -m pytest torchmetrics tests -v --cov=torchmetrics --junitxml="junit/$PYTEST_ARTEFACT" --durations=50
+        python -m pytest torchmetrics tests -v --cov=torchmetrics --durations=50 --tests-per-worker auto --junitxml="junit/$PYTEST_ARTEFACT"
+        pip uninstall -y pytest-parallel
 
     - name: Upload pytest test results
       uses: actions/upload-artifact@v2

@@ -2,8 +2,7 @@ name: PyTorch & Conda
 
 # see: https://help.github.com/en/actions/reference/events-that-trigger-workflows
 on:  # Trigger the workflow on push or pull request, but only for the master branch
-  push:
-    branches: [master, "release/*"]
+  push: {}  # FIXME
   pull_request:
     branches: [master, "release/*"]
 
@@ -87,6 +86,7 @@ jobs:
         pip install -q "numpy==1.20.0"  # try to fix cocotools for PT 1.4 & 1.9
         pip install --requirement requirements.txt --quiet
         pip install --requirement requirements/test.txt --quiet
+        pip install pytest-parallel
         pip list
         python -c "from torch import __version__ as ver; assert '.'.join(ver.split('.')[:2]) == '${{ matrix.pytorch-version }}', ver"
       shell: bash -l {0}
@@ -94,7 +94,7 @@ jobs:
     - name: Testing
       run: |
         # NOTE: run coverage on tests does not propagare faler status for Win, https://github.com/nedbat/coveragepy/issues/1003
-        python -m pytest torchmetrics tests -v --durations=50 --junitxml=$PYTEST_ARTEFACT
+        python -m pytest torchmetrics tests -v --durations=50 --tests-per-worker auto --junitxml=$PYTEST_ARTEFACT
       shell: bash -l {0}
 
     - name: Upload pytest test results
