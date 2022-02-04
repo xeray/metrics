@@ -108,7 +108,7 @@ jobs:
         TEST_DIRS: "${{ needs.check-diff.outputs.focus }}"
       run: |
         # NOTE: run coverage on tests does not propagare faler status for Win, https://github.com/nedbat/coveragepy/issues/1003
-        python -m pytest torchmetrics $TEST_DIRS --durations=50 --junitxml=$PYTEST_ARTEFACT
+        python -m pytest torchmetrics $TEST_DIRS --durations=50 --timeout=120 --junitxml=$PYTEST_ARTEFACT
 
     - name: Upload pytest test results
       uses: actions/upload-artifact@master
