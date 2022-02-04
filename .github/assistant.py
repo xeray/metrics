@@ -117,7 +117,7 @@ class AssistantCLI:
         # filter only package files and skip inits
         _filter_pkg = lambda fn: (fn.startswith("torchmetrics") and "__init__.py" not in fn) or fn.startswith("tests")
         files_pkg = [fn for fn in files if _filter_pkg(fn)]
-        if not files_pkg:
+        if not files_pkg or len(files) > len(files_pkg):
             return "tests"
 
         # parse domains
