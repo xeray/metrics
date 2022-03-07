@@ -320,7 +320,7 @@ class CatMetric(BaseAggregator):
                 dimensions will be flattened
         """
         value = self._cast_and_nan_check_input(value)
-        if any(value.flatten()):
+        if len(value.flatten()):
             self.value.append(value)
 
     def _compute(self) -> Tensor:
